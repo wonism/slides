@@ -148,7 +148,24 @@ export default class Presentation extends React.Component {
           <CodePane
             style={{ fontSize: '1.5rem' }}
             lang="javascript"
-            source={require('./applyMiddleware.example')}
+            source={`export default function applyMiddleware(...middlewares) {
+  return createStore => (...args) => {
+    // ...
+
+    // As you see, Redux Middlewares will be run sequentially.
+    const chain = middlewares.map(middleware => middleware({
+      getState: store.getState,
+      dispatch: (...args) => dispatch(...args)
+    }))
+    dispatch = compose(...chain)(store.dispatch)
+
+    // Then, Store will be returned finally.
+    return {
+      ...store,
+      dispatch
+    }
+  }
+}`}
           />
         </Slide>
         <Slide transition={['spin', 'fade']} bgColor="tertiary">
@@ -164,7 +181,26 @@ export default class Presentation extends React.Component {
           <CodePane
             style={{ fontSize: '1.5rem' }}
             lang="javascript"
-            source={require('./middleware.example')}
+            source={`function middleware(store) { // Most of case, you don't need store
+  return function wrapDispatchToAddMiddleware(next) {
+    return function dispatchAndDoSomething(action) {
+      console.group(action.type); console.info('dispatching', action);
+
+      const isHookable = !action.type.match(/^PRE_/);
+      // (If you call store.dispatch in middleware instead of next,
+      // The action will travel the whole middleware chain again.)
+      if (isHookable) store.dispatch({ type: 'PRE_' + action.type });
+
+      const result = next(action);
+
+      // Will get state via calling store.getState
+      const state = store.getState();
+      console.log('next state', state); console.groupEnd();
+
+      return result;
+    };
+  };
+}`}
           />
         </Slide>
         <Slide transition={['spin', 'fade']} bgColor="tertiary">
