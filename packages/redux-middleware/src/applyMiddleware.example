@@ -1,0 +1,18 @@
+export default function applyMiddleware(...middlewares) {
+  return createStore => (...args) => {
+    // ...
+
+    // As you see, Redux Middlewares will be run sequentially.
+    const chain = middlewares.map(middleware => middleware({
+      getState: store.getState,
+      dispatch: (...args) => dispatch(...args)
+    }))
+    dispatch = compose(...chain)(store.dispatch)
+
+    // Then, Store will be returned finally.
+    return {
+      ...store,
+      dispatch
+    }
+  }
+}
