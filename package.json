@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "redux-middleware": "file:packages/redux-middleware"
+    "redux-middleware": "file:packages/redux-middleware",
+    "spectacle-terminal": "^0.5.0"
   },
   "devDependencies": {
     "lerna": "^3.8.0",
