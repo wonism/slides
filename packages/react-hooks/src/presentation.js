@@ -23,6 +23,8 @@ import magic from './magic.gif';
 import hereWeGo from './here-we-go.gif';
 import dive from './dive.gif';
 import takeALook from './take-a-look.gif';
+import letsSee from './let-us-see.gif';
+import see from './see.gif';
 
 // Require CSS
 require('normalize.css');
@@ -107,20 +109,21 @@ export default class Presentation extends React.Component {
         <Slide transition={['spin', 'fade']} bgColor="tertiary">
           <Terminal
             title="1. wonism@wonism: ~(bash)"
+            isMaximized={false}
             output={[
               '$ npm i -S react@next react-dom@next',
               <div>
                 <div>
-                  '+ react@16.7.0-alpha.2'
+                  '+ react@16.8.0-alpha.1'
                 </div>
                 <div>
-                  '+ react-dom@16.7.0-alpha.2',
+                  '+ react-dom@16.8.0-alpha.1'
                 </div>
                 <div>
-                  'added 7 packages from 3 contributors and audited 24 packages in 1.402s',
+                  'added 7 packages from 3 contributors and audited 24 packages in 1.013s'
                 </div>
                 <div>
-                  'found 0 vulnerabilities',
+                  'found 0 vulnerabilities'
                 </div>
               </div>
             ]}
@@ -254,7 +257,7 @@ const subOne = () => { setNum(num - 1); };
           <CodePane
             style={{ fontSize: '1.5rem' }}
             lang="javascript"
-            source={`// To perform side effect, we should pass a function as the first argument to useEffect.
+            source={`// To handle side effect, we should pass a function as the first argument to useEffect.
 // async function can not be passed. If you want to use it, you need to wrap the async function.
 React.useEffect(() => {
   fetch('https://swapi.co/api/people/1/')
@@ -274,6 +277,185 @@ React.useEffect(() => {
             <S type="bold" textColor="tertiary">
               &nbsp;useEffect will be called on every render phase if it is not optimized.
             </S>
+          </Text>
+        </Slide>
+        <Slide transition={['zoom', 'fade']}>
+          <Heading size={4} textColor="tertiary">
+            useContext
+          </Heading>
+          <Text textAlign="left">
+            As name saids,
+            <S type="bold" textColor="tertiary">
+              &nbsp;useContext&nbsp;
+            </S>
+            is used to handle context.
+          </Text>
+          <Text textAlign="left">
+            <S type="bold" textColor="tertiary">
+              context&nbsp;
+            </S>
+            is mainly used when developer needs to treat data
+            <S type="bold" textColor="tertiary">
+              &nbsp;globally
+            </S>
+            .
+          </Text>
+          <iframe
+            height="300"
+            scrolling="no"
+            title="Using context with useContext hook"
+            src="//codepen.io/wonism/embed/xmWYpe/?height=300&theme-id=dark&default-tab=js,result"
+            frameborder="no"
+            allowtransparency="true"
+            allowfullscreen="true"
+            style={{ width: '100%' }}
+          >
+            See the Pen
+            &nbsp;
+            <a href='https://codepen.io/wonism/pen/xmWYpe/'>Using context with useContext hook</a>
+            &nbsp;by Jaewon (
+            <a href='https://codepen.io/wonism'>@wonism</a>
+            ) on&nbsp;
+            <a href='https://codepen.io'>CodePen</a>
+            .
+          </iframe>
+        </Slide>
+        <Slide transition={['spin', 'fade']} bgColor="tertiary">
+          <Heading size={4} textColor="primary">
+            let's see useContext
+          </Heading>
+          <Image src={letsSee} alt="let us see" style={imgStyle} />
+        </Slide>
+        <Slide transition={['spin', 'fade']} bgColor="tertiary">
+          <CodePane
+            style={{ fontSize: '1.5rem' }}
+            lang="javascript"
+            source={`const UserContext = React.createContext();
+
+const Hello = () => {
+  const value = React.useContext(UserContext);
+  // To read the value in here, We need to call useContext with an argument as UserContext that we've created.
+  // When the value is changed, useContext hook will re-render the component with new context value.
+  return <h1>Hello, {value}!</h1>
+};
+
+const App = () => (
+  <UserContext.Provider value="World">
+    {/* We used the Provider in App and set the value as a "World". */}
+    {/* It means the comonent that reads context in the V-DOM tree can read this value. */}
+    <Hello />
+    <React.Fragment>
+      <Hello />
+    </React.Fragment>
+  </UserContext.Provider>
+);`}
+          />
+        </Slide>
+        <Slide transition={['zoom', 'fade']}>
+          <Text textAlign="left">
+            As you see,
+            <S type="bold" textColor="tertiary">
+              &nbsp;Provider&nbsp;
+            </S>
+            passes
+            <S type="bold" textColor="tertiary">
+              &nbsp;World&nbsp;
+            </S>
+            as its value.
+            And in its child component,
+            <S type="bold" textColor="tertiary">
+              &nbsp;useContext&nbsp;
+            </S>
+            hook is used to get the value.
+          </Text>
+        </Slide>
+        <Slide transition={['zoom', 'fade']}>
+          <Heading size={4} textColor="tertiary">
+            useRef
+          </Heading>
+          <Text textAlign="left">
+            <S type="bold" textColor="tertiary">
+              ref&nbsp;
+            </S>
+            can help developer to handle
+            <S type="bold" textColor="tertiary">
+              &nbsp;uncontrolled component
+            </S>
+            .
+          </Text>
+          <Text textAlign="left">
+            <S type="bold" textColor="tertiary">
+              useRef&nbsp;
+            </S>
+            can be used instead of
+            <S type="bold" textColor="tertiary">
+              &nbsp;createRef
+            </S>
+            .
+          </Text>
+          <iframe
+            height="300"
+            scrolling="no"
+            title="Handle uncontrolled component with useRef"
+            src="//codepen.io/wonism/embed/MZNZwq/?height=265&theme-id=dark&default-tab=js,result"
+            frameborder="no"
+            allowtransparency="true"
+            allowfullscreen="true"
+            style={{ width: '100%' }}
+          >
+            See the Pen
+            &nbsp;
+            <a href='https://codepen.io/wonism/pen/MZNZwq/'>Handle uncontrolled component with useRef</a>
+            &nbsp;by Jaewon (
+            <a href='https://codepen.io/wonism'>@wonism</a>
+            ) on&nbsp;
+            <a href='https://codepen.io'>CodePen</a>
+            .
+          </iframe>
+        </Slide>
+        <Slide transition={['spin', 'fade']} bgColor="tertiary">
+          <Heading size={4} textColor="primary">
+            let's see useRef
+          </Heading>
+          <Image src={see} alt="let us see" style={imgStyle} />
+        </Slide>
+        <Slide transition={['spin', 'fade']} bgColor="tertiary">
+          <CodePane
+            style={{ fontSize: '1.5rem' }}
+            lang="javascript"
+            source={`const App = () => {
+  const [name, setName] = React.useState('______');
+  const $name = React.useRef();
+  // $name is created by useRef and it will be assigned into input's ref.
+
+  const handleSubmit = () => {
+    // Developer can get the value of uncontrolled component.
+    setName($name.current.value);
+  };
+
+  return (
+    <React.Fragment>
+      <h2>You inputted {name}</h2>
+      <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} >
+        <input type="text" name="username" ref={$name} />
+        <input type="submit" value="CLICK" />
+      </form>
+    </React.Fragment>
+  );
+};`}
+          />
+        </Slide>
+        <Slide transition={['spin', 'fade']} bgColor="tertiary">
+          <Text textAlign="left" textColor="primary">
+            There are many other types of hooks.
+            <br />
+            e.g. useReducer, useMemo, etc.
+          </Text>
+          <br />
+          <Text textAlign="left" textColor="primary">
+            If you want to use <b>hooks</b>, All you need to do is <b>just updating the React</b> to a version that supports hooks.
+            You can adopt hooks step by step with existing code base easily.
+            Because hooks <b>doesn’t include any breaking changes</b>.
           </Text>
         </Slide>
         <Slide transition={['zoom', 'fade']}>
